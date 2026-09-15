@@ -12,3 +12,22 @@ def index(request):
     else:
         all_notes = Note.objects.all()
         return render(request, 'notes/index.html', {'notes': all_notes})
+
+def delete(request, note_id):
+    note = Note.objects.get(id=note_id) #busca a nota pelo id
+    note.delete() #apaga a note
+    return redirect('index') #volta pra pg inicial
+
+def update(request, note_id):
+    note = Note.objects.get(id=note_id)
+    if request.method == 'POST':
+        note.title = request.POST.get('titulo')
+        note.content = request.POST.get('detalhes')
+        note.save()
+        return redirect('index')
+    else:
+        return render(request, 'notes/edit.html', {'note': note})
+
+
+
+

@@ -19,8 +19,16 @@
 
   <ul class="card-container">
       {% for note in notes %}
-      <li class="card card-title">{{note.title}}</li>
+      <li class="card">
+        <h3 class="card-title">{{note.title}}</h3>
+        <form method="post" action="{% url 'delete' note.id %}"> 
+          {% csrf_token %}
+          <button type="submit">Deletar</button>
+        </form>
+        <a href="{% url 'update' note.id %}">Editar</a>
+      </li>
       {% endfor %}
   </ul>
 </main>
 {% endblock %}
+  
