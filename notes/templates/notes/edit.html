@@ -14,6 +14,8 @@
     <input class="form-card-title" id="titulo" type="text" name="titulo" value="{{ note.title }}" />
     <label for="detalhes">Detalhes</label>
     <textarea class="autoresize" id="detalhes" name="detalhes">{{ note.content }}</textarea>
+    <label for="tag">Adicione uma tag</label>
+    <input class="form-card-title" id="tag" type="text" name="tag" value="{{ note.tag.name }}"/>
     <input class="btn" type="submit" value="Atualizar"/>
     <a href="{% url 'index' %}">Voltar</a>
   </form>
