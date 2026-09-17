@@ -76,8 +76,8 @@ WSGI_APPLICATION = 'getit.wsgi.application'
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
 DATABASES = {
-    'postgresql://projeto1b_14jh_user:ZykbCnecVdaYkQi4P3rXopQSGUDvVGgx@dpg-dalee7h42hec73c6uj2g-a.ohio-postgres.render.com/projeto1b_14jh': dj_database_url.config(
-        default='',
+    'default': dj_database_url.config(
+        default='postgresql://projeto1b_14jh_user:ZykbCnecVdaYkQi4P3rXopQSGUDvVGgx@dpg-dalee7h42hec73c6uj2g-a.ohio-postgres.render.com/projeto1b_14jh',
         conn_max_age=600,
         ssl_require=not DEBUG
     )
