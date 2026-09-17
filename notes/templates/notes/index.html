@@ -15,7 +15,7 @@
     <input class="form-card-title" id="titulo" type="text" name="titulo" />
     <label for="detalhes">Digite o conteúdo...</label>
     <textarea class="autoresize" id="detalhes" name="detalhes"></textarea>
-    <label for="tag">Adicione uma tag</label>
+    <label for="tag" placeholder="tag1, tag2, tag3">Tags (separadas por vírgula)</label>
     <input class="form-card-title" id="tag" type="text" name="tag" />
     <input class="btn" type="submit" />
   </form>
@@ -24,9 +24,9 @@
       {% for note in notes %}
       <li class="card">
         <h3 class="card-title">{{note.title}}</h3>
-        {% if note.tag %}
-          <p>{{ note.tag.name }}</p>
-        {% endif %}
+        {% for tag in note.tags.all %}
+          <a href="{% url 'tag_detail' tag.id %}">{{ tag.name}}</a>
+        {% endfor %}
         <form method="post" action="{% url 'delete' note.id %}"> 
           {% csrf_token %}
           <button type="submit">Deletar</button>

@@ -1,18 +1,22 @@
 from django.shortcuts import render, redirect
 from .models import Note, Tag
 
+def parse_tags(texto):
+    tags = []
+    for nome in texto.split(','):
+        note = note.strip()
+        if nome:
+            tag, created = Tag.objects.get_or_create(name=nome)
+            tags.append(tag)
+    return tags
 
 def index(request):
     if request.method == 'POST':
-        tag_name = request.POST.get('tag', '').strip()
-        if tag_name:
-            tag, created = Tag.objects.get_or_create(name=tag_name)
-        else:
-            tag = None
         title = request.POST.get('titulo')
         content = request.POST.get('detalhes')
-        note = Note(title=title, content=content, tag=tag)
+        note = Note(title=title, content=content)
         note.save()
+        note.tags.set(parse_tags(request.POST.get('tag', '')))
         return redirect('index')
     else:
         all_notes = Note.objects.all()
@@ -26,18 +30,14 @@ def delete(request, note_id):
 def update(request, note_id):
     note = Note.objects.get(id=note_id)
     if request.method == 'POST':
-        tag_name = request.POST.get('tag', '').strip()
-        if tag_name:
-            tag, created = Tag.objects.get_or_create(name=tag_name)
-        else:
-            tag = None
-        note.tag = tag
         note.title = request.POST.get('titulo')
         note.content = request.POST.get('detalhes')
         note.save()
+        note.tags.set(parse_tags(request.POST.get('tag', '')))
         return redirect('index')
     else:
-        return render(request, 'notes/edit.html', {'note': note})
+        tags_texto = ', '.join(tag.name for tag in note.tags.all())
+        return render(request, 'notes/edit.html', {'note': note, 'tags_texto': tags_texto})
 
 def tag_list(request):
     all_tags = Tag.objects.order_by('name')
@@ -45,7 +45,7 @@ def tag_list(request):
 
 def tag_detail(request, tag_id):
     tag = Tag.objects.get(id=tag_id)
-    notes = Note.objects.filter(tag=tag)
+    notes = tag.noes.all()
     return render(request, 'notes/tag_detail.html', {'tag': tag, 'notes': notes})
 
 
