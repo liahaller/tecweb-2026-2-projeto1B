@@ -14,9 +14,9 @@
       {% for note in notes %}
       <li class="card">
         <h3 class="card-title">{{note.title}}</h3>
-        {% if note.tag %}
-          <p>{{ note.tag.name }}</p>
-        {% endif %}
+        {% for tag in note.tags.all %}
+          <a href="{% url 'tag_detail' tag.id %}">{{ tag.name }}</a>
+        {% endfor %}
         <form method="post" action="{% url 'delete' note.id %}"> 
           {% csrf_token %}
           <button type="submit">Deletar</button>

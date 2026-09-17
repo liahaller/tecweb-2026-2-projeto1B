@@ -4,7 +4,7 @@ from .models import Note, Tag
 def parse_tags(texto):
     tags = []
     for nome in texto.split(','):
-        note = note.strip()
+        nome = nome.strip()
         if nome:
             tag, created = Tag.objects.get_or_create(name=nome)
             tags.append(tag)
@@ -45,7 +45,7 @@ def tag_list(request):
 
 def tag_detail(request, tag_id):
     tag = Tag.objects.get(id=tag_id)
-    notes = tag.noes.all()
+    notes = tag.notes.all()
     return render(request, 'notes/tag_detail.html', {'tag': tag, 'notes': notes})
 
 
